@@ -1,7 +1,9 @@
 *.*~
 *.swp
 .project
-target
+target/*
+!target/*.hpi
+!target/*.jar
 .idea
 *.iml
 work
