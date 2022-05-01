@@ -113,6 +113,30 @@ public class DescriptorImpl extends BuildStepDescriptor<Publisher> {
         config.proxyPassword = Secret.fromString(proxyPassword);
     }
 
+    public String getLawHolidays(){
+        return config.lawHolidays;
+    }
+
+  /*  public void setLawHolidays(String lawHolidays){
+        config.lawHolidays = lawHolidays;
+    }*/
+
+    public String getExtraWorkdays(){
+        return config.extraWorkdays;
+    }
+
+ /*   public void setExtraWorkday(String extraWorkdays){
+        config.extraWorkdays = extraWorkdays;
+    }*/
+
+    public boolean getWorkdayNotify(){
+        return config.workdayNotify;
+    }
+
+   /* public void setWorkdayNotify(boolean workdayNotify){
+        config.workdayNotify = workdayNotify;
+    }*/
+
     /**
      * 获取配置，不用于保存
      * @return
@@ -132,6 +156,9 @@ public class DescriptorImpl extends BuildStepDescriptor<Publisher> {
         unsaveConfig.proxyPassword = config.proxyPassword;
 
         unsaveConfig.failNotify = config.failNotify;
+
+        unsaveConfig.lawHolidays = config.lawHolidays;
+        unsaveConfig.extraWorkdays = config.extraWorkdays;
         return unsaveConfig;
     }
 
@@ -176,6 +203,8 @@ public class DescriptorImpl extends BuildStepDescriptor<Publisher> {
         config.topicName = json.getString("topicName");
         config.mentionedId = json.getString("mentionedId");
         config.mentionedMobile = json.getString("mentionedMobile");
+        config.lawHolidays = json.getString("lawHolidays");
+        config.extraWorkdays = json.getString("extraWorkdays");
         config.useProxy = json.get("useProxy")!=null;
         if(config.useProxy && json.get("useProxy") instanceof JSONObject){
             JSONObject jsonObject = json.getJSONObject("useProxy");
@@ -185,6 +214,8 @@ public class DescriptorImpl extends BuildStepDescriptor<Publisher> {
             config.proxyPassword = Secret.fromString(jsonObject.getString("proxyPassword"));
         }
         save();
+        ChineseCalendarUtils.setLawHolidays(config.lawHolidays);
+        ChineseCalendarUtils.setExtraWorkDays(config.extraWorkdays);
         return super.configure(req, json);
     }
 

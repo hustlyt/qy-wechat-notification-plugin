@@ -139,6 +139,10 @@ public class BuildBeginInfo {
         return req;
     }
 
+    /**
+     * 处理提交日志
+     * copy from https://bbs.huaweicloud.com/blogs/320899
+     */
     private void processChangeLogSet(StringBuilder sb, ChangeLogSet cs, NotificationConfig config) {
         sb.append(">提交记录：");
         DateFormat df = new SimpleDateFormat(config.dateFormat);

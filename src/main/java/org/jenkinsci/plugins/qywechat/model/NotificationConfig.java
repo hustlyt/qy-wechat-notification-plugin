@@ -69,4 +69,19 @@ public class NotificationConfig {
      * 日期格式
      */
     public String dateFormat = "";
+
+    /**
+     * 法定节假日
+     */
+    public String lawHolidays = "";
+
+    /**
+     * 调休的工作日
+     */
+    public String extraWorkdays = "";
+
+    /**
+     * 仅工作日发送
+     */
+    public boolean workdayNotify = false;
 }

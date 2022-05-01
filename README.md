@@ -86,3 +86,8 @@ mvn package
 需要更多的支持请通过下方地址进行留言
 
 https://itwake.blog.csdn.net/article/details/122043499
+
+## 修改
+ - [x] 选择是否发送提交记录
+ - [x] 仅工作日发送
+ - [ ] TODO...

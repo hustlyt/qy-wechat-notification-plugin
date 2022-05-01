@@ -1,5 +1,6 @@
 package org.jenkinsci.plugins.qywechat;
 
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.jenkinsci.plugins.qywechat.dto.BuildBeginInfo;
 import org.jenkinsci.plugins.qywechat.dto.BuildMentionedInfo;
 import org.jenkinsci.plugins.qywechat.dto.BuildOverInfo;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 /**
  * 企业微信构建通知
@@ -43,6 +45,8 @@ public class QyWechatNotification extends Publisher implements SimpleBuildStep {
     private String lineFormat;
 
     private String dateFormat;
+
+    private boolean workdayNotify;
 
     private String projectName;
 
@@ -78,8 +82,10 @@ public class QyWechatNotification extends Publisher implements SimpleBuildStep {
         String req = buildInfo.toJSONString();
         listener.getLogger().println("推送通知" + req);
 
-        //执行推送
-        push(listener.getLogger(), config.webhookUrl, req, config);
+        if(shouldPush()){
+            //执行推送
+            push(listener.getLogger(), config.webhookUrl, req, config);
+        }
         return true;
     }
 
@@ -109,8 +115,11 @@ public class QyWechatNotification extends Publisher implements SimpleBuildStep {
         String req = buildInfo.toJSONString();
         listener.getLogger().println("推送通知" + req);
 
-        //推送结束通知
-        push(listener.getLogger(), config.webhookUrl, req, config);
+        boolean shouldPush = shouldPush();
+        if(shouldPush){
+            //推送结束通知
+            push(listener.getLogger(), config.webhookUrl, req, config);
+        }
         listener.getLogger().println("项目运行结果[" + result + "]");
 
         //运行不成功
@@ -118,8 +127,8 @@ public class QyWechatNotification extends Publisher implements SimpleBuildStep {
             return;
         }
 
-        //仅在失败的时候，才进行@
-        if(!result.equals(Result.SUCCESS) || !config.failNotify){
+        //仅在非休息日，且失败的时候，才进行@
+        if(shouldPush && (!result.equals(Result.SUCCESS) || !config.failNotify)){
             //没有填写UserId和手机号码
             if(StringUtils.isEmpty(config.mentionedId) && StringUtils.isEmpty(config.mentionedMobile)){
                 return;
@@ -200,7 +209,17 @@ public class QyWechatNotification extends Publisher implements SimpleBuildStep {
         config.dateFormat = this.dateFormat;
         config.lineFormat = this.lineFormat;
         config.entryFormat = this.entryFormat;
+        config.workdayNotify = this.workdayNotify;
         return config;
+    }
+
+    private boolean shouldPush(){
+        boolean holiday = false;
+        try {
+            holiday = ChineseCalendarUtils.isHoliday(DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
+        } catch (Exception e) {}
+
+        return !workdayNotify || !holiday;
     }
 
     /** 下面为GetSet方法，当前Job保存时进行绑定 **/
@@ -245,9 +264,15 @@ public class QyWechatNotification extends Publisher implements SimpleBuildStep {
         this.lineFormat = lineFormat;
     }
 
+    @DataBoundSetter
+    public void setWorkdayNotify(boolean workdayNotify) {
+        this.workdayNotify = workdayNotify;
+    }
+
     public String getEntryFormat() {
         return entryFormat;
     }
+
     public boolean getRecordChangeLog() {
         return recordChangeLog;
     }
@@ -274,6 +299,10 @@ public class QyWechatNotification extends Publisher implements SimpleBuildStep {
 
     public boolean isFailNotify() {
         return failNotify;
+    }
+
+    public boolean getWorkdayNotify() {
+        return workdayNotify;
     }
 }
 
