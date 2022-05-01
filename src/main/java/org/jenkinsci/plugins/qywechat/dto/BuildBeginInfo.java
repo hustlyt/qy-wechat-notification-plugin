@@ -1,13 +1,17 @@
 package org.jenkinsci.plugins.qywechat.dto;
 
-import org.jenkinsci.plugins.qywechat.NotificationUtil;
-import org.jenkinsci.plugins.qywechat.model.NotificationConfig;
 import hudson.model.AbstractBuild;
 import hudson.model.ParameterValue;
 import hudson.model.ParametersAction;
+import hudson.scm.ChangeLogSet;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.jenkinsci.plugins.qywechat.NotificationUtil;
+import org.jenkinsci.plugins.qywechat.model.NotificationConfig;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +46,10 @@ public class BuildBeginInfo {
      * 环境名称
      */
     private String topicName = "";
+
+    private NotificationConfig config;
+
+    private ChangeLogSet<? extends ChangeLogSet.Entry> changeLogSet;
 
     public BuildBeginInfo(String projectName, AbstractBuild<?, ?> build, NotificationConfig config){
         //获取请求参数
@@ -79,6 +87,8 @@ public class BuildBeginInfo {
         if(config.topicName!=null){
             topicName = config.topicName;
         }
+        this.changeLogSet = build.getChangeSet();
+        this.config = config;
     }
 
     public String toJSONString(){
@@ -111,6 +121,9 @@ public class BuildBeginInfo {
         content.append("<font color=\"info\">【" + this.projectName + "】</font>开始构建\n");
         content.append(" >构建参数：<font color=\"comment\">" + paramBuffer.toString() + "</font>\n");
         content.append(" >预计用时：<font color=\"comment\">" +  durationTimeStr + "</font>\n");
+        if(config.recordChangeLog){
+            processChangeLogSet(content, changeLogSet, config);
+        }
         if(StringUtils.isNotEmpty(this.consoleUrl)){
             content.append(" >[查看控制台](" + this.consoleUrl + ")");
         }
@@ -126,6 +139,33 @@ public class BuildBeginInfo {
         return req;
     }
 
+    private void processChangeLogSet(StringBuilder sb, ChangeLogSet cs, NotificationConfig config) {
+        sb.append(">提交记录：");
+        DateFormat df = new SimpleDateFormat(config.dateFormat);
+        if(cs.isEmptySet()){
+            sb.append("无改动\n");
+        }else{
+            sb.append("\n");
+            for (Object o : cs) {
+                ChangeLogSet.Entry e = (ChangeLogSet.Entry) o;
+                sb.append(String.format(fixNull(config.entryFormat), e.getAuthor(), e.getCommitId(), e.getMsg(), df.format(new Date(e.getTimestamp()))));
 
+                try {
+                    for (ChangeLogSet.AffectedFile file : e.getAffectedFiles()) {
+                        sb.append(String.format(fixNull(config.lineFormat), file.getEditType().getName(), file.getPath()));
+                    }
+                } catch (UnsupportedOperationException ex) {
+                    // early versions of SCM did not support getAffectedFiles, only had getAffectedPaths
+                    for (String file : e.getAffectedPaths()) {
+                        sb.append(String.format(fixNull(config.lineFormat), "", file));
+                    }
+                }
+            }
+        }
+        sb.append("\n");
+    }
 
+    private String fixNull(String s){
+        return StringUtils.isNotBlank(s) ? (s + "\n") : "";
+    }
 }

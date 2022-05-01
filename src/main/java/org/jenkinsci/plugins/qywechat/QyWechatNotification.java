@@ -36,6 +36,14 @@ public class QyWechatNotification extends Publisher implements SimpleBuildStep {
 
     private boolean failNotify;
 
+    private boolean recordChangeLog;
+
+    private String entryFormat;
+
+    private String lineFormat;
+
+    private String dateFormat;
+
     private String projectName;
 
     @Extension
@@ -187,6 +195,11 @@ public class QyWechatNotification extends Publisher implements SimpleBuildStep {
             String val = NotificationUtil.replaceMultipleEnvValue(config.mentionedMobile, envVars);
             config.mentionedMobile = val;
         }
+
+        config.recordChangeLog = this.recordChangeLog;
+        config.dateFormat = this.dateFormat;
+        config.lineFormat = this.lineFormat;
+        config.entryFormat = this.entryFormat;
         return config;
     }
 
@@ -210,6 +223,41 @@ public class QyWechatNotification extends Publisher implements SimpleBuildStep {
     @DataBoundSetter
     public void setFailNotify(boolean failNotify) {
         this.failNotify = failNotify;
+    }
+
+    @DataBoundSetter
+    public void setRecordChangeLog(boolean recordChangeLog) {
+        this.recordChangeLog = recordChangeLog;
+    }
+
+    @DataBoundSetter
+    public void setEntryFormat(String entryFormat) {
+        this.entryFormat = entryFormat;
+    }
+
+    @DataBoundSetter
+    public void setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
+    }
+
+    @DataBoundSetter
+    public void setLineFormat(String lineFormat) {
+        this.lineFormat = lineFormat;
+    }
+
+    public String getEntryFormat() {
+        return entryFormat;
+    }
+    public boolean getRecordChangeLog() {
+        return recordChangeLog;
+    }
+
+    public String getLineFormat() {
+        return lineFormat;
+    }
+
+    public String getDateFormat() {
+        return dateFormat;
     }
 
     public String getWebhookUrl() {

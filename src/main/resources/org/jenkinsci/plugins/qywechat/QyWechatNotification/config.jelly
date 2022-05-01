@@ -13,4 +13,15 @@
     <f:entry title="通知手机号码" field="mentionedMobile" help="/plugin/qy-wechat-notification/help-globalConfig-mentionedMobile.html">
         <f:textbox />
     </f:entry>
+    <f:optionalBlock title="记录提交日志" field="recordChangeLog" inline="true" help="/plugin/qy-wechat-notification/help-recordChangeLog.html">
+        <f:entry title="记录格式" field="entryFormat" help="/plugin/qy-wechat-notification/help-entryFormat.html">
+            <f:textbox />
+        </f:entry>
+        <f:entry title="文件格式" field="lineFormat" help="/plugin/qy-wechat-notification/help-lineFormat.html">
+            <f:textbox />
+        </f:entry>
+        <f:entry title="时间格式" field="dateFormat" help="/plugin/qy-wechat-notification/help-dateFormat.html">
+            <f:textbox />
+        </f:entry>
+    </f:optionalBlock>
 </j:jelly>

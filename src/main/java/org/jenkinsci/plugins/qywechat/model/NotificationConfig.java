@@ -51,4 +51,22 @@ public class NotificationConfig {
      */
     public boolean failNotify = false;
 
+    /**
+     * 记录提交日志
+     */
+    public boolean recordChangeLog = false;
+
+    /**
+     * 记录格式
+     */
+    public String entryFormat = "";
+    /**
+     * 改动了的文件格式
+     */
+    public String lineFormat = "";
+
+    /**
+     * 日期格式
+     */
+    public String dateFormat = "";
 }
