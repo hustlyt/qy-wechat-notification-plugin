@@ -5,10 +5,10 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>4.31</version>
+        <version>3.43</version>
     </parent>
     <artifactId>qy-wechat-notification</artifactId>
-    <version>1.1.2-SNAPSHOT</version>
+    <version>1.0.1</version>
     <packaging>hpi</packaging>
 
     <name>Qy Wechat Notification Plugin</name>
@@ -16,19 +16,19 @@
     <url>https://wiki.jenkins.io/display/JENKINS/Qy+Wechat+Notification+Plugin</url>
     <developers>
         <developer>
-            <id>lucaslai</id>
-            <name>Lucas Lai</name>
-            <email>lan_ff@qq.com</email>
+            <id>laijiaju</id>
+            <name>laijiaju</name>
+            <email>xiaoj313@gmail.com</email>
         </developer>
     </developers>
 
     <properties>
-        <jenkins.version>2.303.1</jenkins.version>
+        <jenkins.version>2.60.1</jenkins.version>
         <java.level>8</java.level>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jenkins.plugin.workflow.version>2.42</jenkins.plugin.workflow.version>
-        <jenkins.plugin.structs.version>1.24</jenkins.plugin.structs.version>
-        <jenkins.plugin.junit.version>1.53</jenkins.plugin.junit.version>
+        <jenkins.plugin.workflow.version>1.11</jenkins.plugin.workflow.version>
+        <jenkins.plugin.structs.version>1.2</jenkins.plugin.structs.version>
+        <jenkins.plugin.junit.version>1.19</jenkins.plugin.junit.version>
         <httpclientutil.version>1.0.4</httpclientutil.version>
     </properties>
 
@@ -36,7 +36,7 @@
         <connection>scm:git:git://github.com/jenkinsci/qy-wechat-notification-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:jenkinsci/qy-wechat-notification-plugin.git</developerConnection>
         <url>http://github.com/jenkinsci/qy-wechat-notification-plugin</url>
-        <tag>HEAD</tag>
+        <tag>v1.0.1</tag>
     </scm>
 
     <repositories>
