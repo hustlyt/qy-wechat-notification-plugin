@@ -88,6 +88,31 @@ mvn package
 https://itwake.blog.csdn.net/article/details/122043499
 
 ## 修改
+
+
  - [x] 选择是否发送提交记录
  - [x] 仅工作日发送
  - [ ] TODO...
+   
+这些修改都是从网上抄的，
+
+来源1：https://bbs.huaweicloud.com/blogs/320899
+
+来源2：https://blog.csdn.net/shadow_zed/article/details/86726546
+## 显示效果：
+
+[![OCJE5Q.png](https://s1.ax1x.com/2022/05/01/OCJE5Q.png)](https://imgtu.com/i/OCJE5Q)
+
+### 选择是否发送提交记录
+在项目里勾选上“记录提交日志”，然后指定记录格式和时间格式即可
+
+[![OCGj4H.png](https://s1.ax1x.com/2022/05/01/OCGj4H.png)](https://imgtu.com/i/OCGj4H)
+
+### 仅工作日发送
+首先在Jenkins里配置法定节假日和调休的工作日，每年的节假日安排可参考：http://www.gov.cn/fuwu/2021-10/25/content_5644875.htm
+
+[![OCGh4J.png](https://s1.ax1x.com/2022/05/01/OCGh4J.png)](https://imgtu.com/i/OCGh4J)
+然后在项目里勾选上“仅工作日发送”即可
+
+[![OCGfN4.png](https://s1.ax1x.com/2022/05/01/OCGfN4.png)](https://imgtu.com/i/OCGfN4)
+
